@@ -15,8 +15,8 @@ float r_max = 1.0;
 float i_min = -1.0;
 float i_max = 1.0;
 int max_iter = 300;
-int r_div = 1920;
-int i_div = 1080;
+int r_div = 100;
+int i_div = 35;
 
 float r_delta, i_delta;
 short int print_list = 0;
