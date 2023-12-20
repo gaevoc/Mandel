@@ -19,20 +19,18 @@ int r_div = 100;
 int i_div = 35;
 
 float r_delta, i_delta;
-short int print_list = 0;
+short int is_a_tty = 1;
 
 
 
 void init(int argc, char *argv[]) {
     int opt;
 
-    while ((opt = getopt(argc, argv, "lx:r:i:")) != -1) {
+    is_a_tty = isatty(1);
+
+    while ((opt = getopt(argc, argv, "x:r:i:")) != -1) {
         switch (opt) {
-            case 'l':
-                // Print list of values for gnuplot
-                //printf("Option -l (list)\n");
-                print_list = 1;
-                break;
+            
             case 'x':
                 // printf("Option -x (max_iter): %s\n", optarg);
                 max_iter = atoi(optarg);
@@ -75,7 +73,7 @@ int mandel(double cr, double ci) {
     return n;
 }
 
-void plotme(int n)
+void plotme(double cr, double ci, int r, int i, int n)
 {
     if (n >= max_iter)
     {
@@ -107,15 +105,20 @@ void plotme(int n)
         wchar_t box = '*';
         printf("%lc", box);
     }
+
+    if (r == r_div) printf("\n");
 } // ' ', '\u2591', '\u2592', '\u2593', '\u2588', '\u2593', '\u2592', '\u2591'
 
+void listme (double cr, double ci, int r, int i, int n) {
+    printf("%1.14e %1.14e %d %d %d\n", cr, ci, r, i, n);
+}
 
 int main(int argc, char *argv[]) {
 
     setlocale(LC_ALL, "en_US.UTF-8");
 
     init(argc, argv);
-    if (print_list == 0) {
+    if (is_a_tty == 1) {
         printf ("%f %f %f %f %f %f\n", r_min, r_max, i_min, i_max, r_delta, i_delta);
         printf ("r_div %d i_div %d max_iter %d \n", r_div, i_div, max_iter);
     }
@@ -130,15 +133,13 @@ int main(int argc, char *argv[]) {
 
             n = mandel(cr, ci);
 
-            if (print_list == 1) {
-                printf("%1.14e %1.14e %d\n", cr, ci, n);
+            if (is_a_tty == 1) {
+                plotme(cr, ci, r, i, n);
             } else {
-                plotme(n);
+                listme (cr, ci, r, i, n);
             }
             
         }
-        if (print_list == 0)
-            printf("\n");
     }
     return 0;
 }
