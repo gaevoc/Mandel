@@ -107,7 +107,7 @@ void plotme(double cr, double ci, int r, int i, int n)
     }
 
     if (r == r_div) printf("\n");
-} // ' ', '\u2591', '\u2592', '\u2593', '\u2588', '\u2593', '\u2592', '\u2591'
+} // Some examples of box chars \u2591', '\u2592', '\u2593', '\u2588'
 
 void listme (double cr, double ci, int r, int i, int n) {
     printf("%1.14e %1.14e %d %d %d\n", cr, ci, r, i, n);
