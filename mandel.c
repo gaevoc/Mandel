@@ -118,6 +118,8 @@ int main(int argc, char *argv[]) {
     setlocale(LC_ALL, "en_US.UTF-8");
 
     init(argc, argv);
+	
+	// Header information if in console
     if (is_a_tty == 1) {
         printf ("%f %f %f %f %f %f\n", r_min, r_max, i_min, i_max, r_delta, i_delta);
         printf ("r_div %d i_div %d max_iter %d \n", r_div, i_div, max_iter);
