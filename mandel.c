@@ -20,6 +20,7 @@ int i_div = 35;
 
 float r_delta, i_delta;
 short int is_a_tty = 1;
+int *r_ruler, *i_ruler;
 
 
 
@@ -51,6 +52,9 @@ void init(int argc, char *argv[]) {
     
     r_delta = (r_max - r_min)/(r_div - 1);
     i_delta = (i_max - i_min) / (i_div - 1);
+
+    r_ruler = malloc(sizeof(int) * r_div);
+    i_ruler = malloc(sizeof(int) * i_div);
 }
 
 int mandel_point(double cr, double ci) {
@@ -58,7 +62,7 @@ int mandel_point(double cr, double ci) {
   int n;
   
   n = 0;
-    zr = 0.0; zi = 0.0;
+  zr = 0.0; zi = 0.0;
             
   while (n <= max_iter) {
         zrn = zr * zr - zi * zi + cr;
