@@ -32,7 +32,7 @@ void init(int argc, char *argv[]) {
     while ((opt = getopt(argc, argv, "x:r:i:")) != -1) {
         switch (opt) {
             
-            case 'x':
+            case 'i':
                 // printf("Option -x (max_iter): %s\n", optarg);
                 max_iter = atoi(optarg);
                 break;
@@ -40,10 +40,10 @@ void init(int argc, char *argv[]) {
                 // printf("Option -r (r_div): %s\n", optarg);
                 r_div = atoi(optarg);
                 break;
-            case 'i':
-                // printf("Option -i (i_div): %s\n", optarg);
-                i_div = atoi(optarg);
-                break;
+            // case 'i':
+            //     // printf("Option -i (i_div): %s\n", optarg);
+            //     i_div = atoi(optarg);
+            //     break;
             case '?':
                 // printf("Opzione sconosciuta: %c\n", optopt);
                 break;
@@ -51,7 +51,9 @@ void init(int argc, char *argv[]) {
     }
     
     r_delta = (r_max - r_min)/(r_div - 1);
-    i_delta = (i_max - i_min) / (i_div - 1);
+    // i_delta = (i_max - i_min) / (i_div - 1);
+    i_delta = r_delta;
+    i_div = (int)((i_max - i_min) / i_delta + 0.5) + 1;
 
     r_ruler = malloc(sizeof(int) * r_div);
     i_ruler = malloc(sizeof(int) * i_div);
