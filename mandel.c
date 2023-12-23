@@ -14,6 +14,7 @@ float r_min = -2.0;
 float r_max = 1.0;
 float i_min = -1.0;
 float i_max = 1.0;
+
 int max_iter = 300;
 int r_div = 100;
 int i_div = 35;
@@ -29,14 +30,14 @@ void init(int argc, char *argv[]) {
 
     is_a_tty = isatty(1);
 
-    while ((opt = getopt(argc, argv, "x:r:i:")) != -1) {
+    while ((opt = getopt(argc, argv, "x:d:r:R:i:I:")) != -1) {
         switch (opt) {
             
-            case 'i':
+            case 'x':
                 // printf("Option -x (max_iter): %s\n", optarg);
                 max_iter = atoi(optarg);
                 break;
-            case 'r':
+            case 'd':
                 // printf("Option -r (r_div): %s\n", optarg);
                 r_div = atoi(optarg);
                 break;
@@ -46,6 +47,22 @@ void init(int argc, char *argv[]) {
             //     break;
             case '?':
                 // printf("Opzione sconosciuta: %c\n", optopt);
+                break;
+            case 'r':
+                // printf("Option -r (r_div): %s\n", optarg);
+                r_min = atof(optarg);
+                break;
+            case 'R':
+                // printf("Option -r (r_div): %s\n", optarg);
+                r_max = atof(optarg);
+                break;
+            case 'i':
+                // printf("Option -r (r_div): %s\n", optarg);
+                i_min = atof(optarg);
+                break;
+            case 'I':
+                // printf("Option -r (r_div): %s\n", optarg);
+                i_max = atof(optarg);
                 break;
         }
     }
@@ -126,7 +143,7 @@ int main(int argc, char *argv[]) {
     init(argc, argv);
 	
 	// Header information if in console
-    if (is_a_tty == 1) {
+    if (is_a_tty == 1 || 1) {
         printf ("%f %f %f %f %f %f\n", r_min, r_max, i_min, i_max, r_delta, i_delta);
         printf ("r_div %d i_div %d max_iter %d \n", r_div, i_div, max_iter);
     }

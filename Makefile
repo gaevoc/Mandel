@@ -12,10 +12,14 @@ clean:
 mandel: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 
+console: mandel
+	./mandel -r 100 -i 500
+
 gnuplot: mandel
-	./mandel -r 1800 -i 1200 -x 500 > ./mandel.out
+	./mandel -r -0.785 -R -0.72 -i 0.115 -I 0.135 -d 1800 -x 500 > ./mandel.out
 	gnuplot -p -e "set terminal wxt 0;\
 	set view map;\
 	set palette defined ( 0 'white', 0.07 'red', 0.3 'blue', 1 'black' );\
-	plot [-2:1][-1:1]'./mandel.out' using 1:2:5 with image;\
+	set cbrange[1:500];\
+	plot './mandel.out' using 1:2:5 with image;\
 	pause mouse close"
