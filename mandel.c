@@ -53,7 +53,7 @@ void init(int argc, char *argv[]) {
     i_delta = (i_max - i_min) / (i_div - 1);
 }
 
-int mandel(double cr, double ci) {
+int mandel_point(double cr, double ci) {
   double zr, zi, mod_z2, zrn, zin;
   int n;
   
@@ -133,7 +133,7 @@ int main(int argc, char *argv[]) {
             cr = r_min + (r * r_delta);
             ci = i_min + (i * i_delta);
 
-            n = mandel(cr, ci);
+            n = mandel_point(cr, ci);
 
             if (is_a_tty == 1) {
                 plotme(cr, ci, r, i, n);
