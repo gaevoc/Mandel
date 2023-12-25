@@ -13,7 +13,7 @@ mandel: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 
 console: mandel
-	./mandel -r 100 -i 500
+	./mandel -r -2 -R 1 -i -1 -I 1 -x 500
 
 gnuplot: mandel
 	./mandel -r -0.785 -R -0.72 -i 0.115 -I 0.135 -d 1800 -x 500 > ./mandel.out

@@ -21,7 +21,7 @@ int i_div = 35;
 
 float r_delta, i_delta;
 short int is_a_tty = 1;
-int *r_ruler, *i_ruler;
+double *r_ruler, *i_ruler;
 
 
 
@@ -72,8 +72,17 @@ void init(int argc, char *argv[]) {
     i_delta = r_delta;
     i_div = (int)((i_max - i_min) / i_delta + 0.5) + 1;
 
-    r_ruler = malloc(sizeof(int) * r_div);
-    i_ruler = malloc(sizeof(int) * i_div);
+    r_ruler = malloc(sizeof(double) * r_div);
+    i_ruler = malloc(sizeof(double) * i_div);
+
+    int n;
+    for (n=0; n<=r_div; n++) {
+        r_ruler[n] = r_min + (n * r_delta);
+        // printf("%2.14e\n", r_ruler[n]);
+    }
+    for (n=0; n<=i_div; n++) {    
+        i_ruler[n] = i_min + (n * i_delta);
+    }
 }
 
 int mandel_point(double cr, double ci) {
@@ -83,7 +92,7 @@ int mandel_point(double cr, double ci) {
   n = 0;
   zr = 0.0; zi = 0.0;
             
-  while (n <= max_iter) {
+  while (n < max_iter) {
         zrn = zr * zr - zi * zi + cr;
         zin = 2 * zr * zi + ci;
 
@@ -152,10 +161,11 @@ int main(int argc, char *argv[]) {
     double cr, ci;
 
     for (i=0; i<=i_div; i++) {
+        ci = i_ruler[i];
         for (r=0; r<=r_div; r++) {
-            cr = r_min + (r * r_delta);
-            ci = i_min + (i * i_delta);
-
+            // cr = r_min + (r * r_delta);
+            // ci = i_min + (i * i_delta);
+            cr =r_ruler[r];
             n = mandel_point(cr, ci);
 
             if (is_a_tty == 1) {
