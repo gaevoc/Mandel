@@ -22,6 +22,7 @@ int i_div = 35;
 float r_delta, i_delta;
 short int is_a_tty = 1;
 double *r_ruler, *i_ruler;
+int * n_map;
 
 
 
@@ -83,6 +84,12 @@ void init(int argc, char *argv[]) {
     for (n=0; n<=i_div; n++) {    
         i_ruler[n] = i_min + (n * i_delta);
     }
+
+    n_map = malloc(sizeof(int) * (r_div * i_div));
+    if (n_map == NULL) {
+        printf("Error allocating n_map\n");
+        exit (1);
+    }
 }
 
 int mandel_point(double cr, double ci) {
@@ -105,7 +112,7 @@ int mandel_point(double cr, double ci) {
     return n;
 }
 
-void plotme(double cr, double ci, int r, int i, int n)
+void plot_point(double cr, double ci, int r, int i, int n)
 {
     if (n >= max_iter)
     {
@@ -138,11 +145,29 @@ void plotme(double cr, double ci, int r, int i, int n)
         printf("%lc", box);
     }
 
-    if (r == r_div) printf("\n");
+    if (r == r_div - 1) printf("\n");
 } // Some examples of box chars \u2591', '\u2592', '\u2593', '\u2588'
 
-void listme (double cr, double ci, int r, int i, int n) {
+void list_point (double cr, double ci, int r, int i, int n) {
     printf("%1.14e %1.14e %d %d %d\n", cr, ci, r, i, n);
+}
+
+void plot_set() {
+    int i, r;
+    for (i=0; i<i_div; i++) {
+            for (r=0; r<r_div; r++) {
+                    plot_point(r_ruler[r], i_ruler[i], r, i, n_map[i * r_div + r]);
+            }
+        }
+}
+
+void list_set() {
+    int i, r;
+    for (i=0; i<i_div; i++) {
+            for (r=0; r<r_div; r++) {
+                    list_point(r_ruler[r], i_ruler[i], r, i, n_map[i * r_div + r]);
+            }
+        }
 }
 
 int main(int argc, char *argv[]) {
@@ -151,30 +176,31 @@ int main(int argc, char *argv[]) {
 
     init(argc, argv);
 	
-	// Header information if in console
-    if (is_a_tty == 1 || 1) {
-        printf ("%f %f %f %f %f %f\n", r_min, r_max, i_min, i_max, r_delta, i_delta);
-        printf ("r_div %d i_div %d max_iter %d \n", r_div, i_div, max_iter);
-    }
+	// Header information on stderr
+    fprintf (stderr, "%f %f %f %f %f %f\n", r_min, r_max, i_min, i_max, r_delta, i_delta);
+    fprintf (stderr, "r_div %d i_div %d max_iter %d \n", r_div, i_div, max_iter);
+
     
     int n, i, r;
     double cr, ci;
 
-    for (i=0; i<=i_div; i++) {
+    for (i=0; i<i_div; i++) {
         ci = i_ruler[i];
-        for (r=0; r<=r_div; r++) {
+        for (r=0; r<r_div; r++) {
             // cr = r_min + (r * r_delta);
             // ci = i_min + (i * i_delta);
             cr =r_ruler[r];
             n = mandel_point(cr, ci);
 
-            if (is_a_tty == 1) {
-                plotme(cr, ci, r, i, n);
-            } else {
-                listme (cr, ci, r, i, n);
-            }
-            
+            n_map[i * r_div + r] = n;
         }
     }
+
+    if (is_a_tty == 1) {
+        plot_set();
+    } else {
+        list_set();
+    }
+    
     return 0;
 }
