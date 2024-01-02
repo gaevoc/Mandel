@@ -1,5 +1,6 @@
 CC=gcc
-CFLAGS=-O
+CFLAGS=-O `sdl2-config --cflags`
+OFLAGS=`sdl2-config --libs`
 DEPS = 
 OBJ = mandel.o 
 
@@ -10,7 +11,7 @@ clean:
 	rm *.o mandel mandel.out
 
 mandel: $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS)
+	$(CC) -o $@ $^ $(OFLAGS)
 
 console: mandel
 	./mandel -r -2 -R 1 -i -1 -I 1 -x 500
@@ -23,3 +24,6 @@ gnuplot: mandel
 	set cbrange[1:500];\
 	plot './mandel.out' using 1:2:5 with image;\
 	pause mouse close"
+
+
+	
